@@ -1,21 +1,18 @@
+.cell-matrix{
+  background-color: black
+}
+
 .flip-cell {
-  width: 100px;
-  height: 100px;
   perspective: 1000px;
   background-color: black;
 }
 
 .flip-cell-inner {
-  width: 100%;
-  height: 100%;
-  transition: transform 0.8s;
+  transition: transform 2.8s;
   transform-style: preserve-3d;
 }
 
 .flip-cell-front{
-  position: absolute;
-  width: 100%;
-  height: 100%;
   backface-visibility: hidden;
 }
 
