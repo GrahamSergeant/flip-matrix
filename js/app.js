@@ -1,9 +1,11 @@
+//todo:
+//make pixel size = character size and compose matrix of pixels
+
 (function(){
   let model = {
-      init : function(){
+      init : function(characters){
                 let spacing = 1;
                 let characterWidth = 4;
-                let characters = 3
                 let lines = 1
                 return ({
                   matrixWidth : characters * (characterWidth + spacing),
@@ -15,12 +17,10 @@
   
   let controller = {
     init : function(){
-      let matrixSize = model.init();
+      let message = "ABC ABC ABC"
+      let matrixSize = model.init(message.length);
       view.init(matrixSize);
-      view.display("ABC")
-      setTimeout(function(){ view.display("BCA"); }, 2000);
-      setTimeout(function(){ view.display("CAB"); }, 4000);
-      setTimeout(function(){ view.display("ABC"); }, 6000);
+      view.display(message)
     },
     getCharacterData : function(character){
       return model.characterData[character];
@@ -46,7 +46,7 @@
           let flipCellInner = document.createElement("div");
           flipCell.appendChild(flipCellInner);
           flipCellInner.classList.add("flip-cell-inner");
-          //flipCellInner.classList.add("rotate"); //cell on/off
+          flipCellInner.classList.add("rotate"); //cell on/off
           let flipCellFront = document.createElement("div");
           flipCellInner.appendChild(flipCellFront);
           flipCellFront.classList.add("flip-cell-front");
@@ -67,13 +67,27 @@
     },
     //
     display : function(message, line){
+      let space = " ";
+      let spaceIndices = [];
+      let index = message.indexOf(space);
+      while (index != -1) {
+          spaceIndices.push(index);
+          index = message.indexOf(space, index + 1);
+      }
       //draw charact starting at register - increment after each character is drawn to add kerning
       let register = 0;
       //iterate over each character in passed in message
-      for (let character of message){
+      for (let character = 0; character < message.length; character++){
+        let currentCharacter;
         //get character data stored in an array of row arrays of binary (1 = cell on/ 0 = cell off)
-        let currentCharacter = controller.getCharacterData(character);
-        console.log(character);
+        if(spaceIndices.includes(character)){
+          spaceIndices.shift();
+          currentCharacter = controller.getCharacterData("space");
+          console.log(currentCharacter);
+        } else {
+                  currentCharacter = controller.getCharacterData(message[character]);
+                  console.log(currentCharacter);
+        }
         //iterate over each row
         for (let row = 0; row < currentCharacter.length; row++){
           //iterate over each cell in each row
@@ -97,6 +111,7 @@
         //move register after kerning
         register++;
       }
+      
     }
   };
   controller.init();

@@ -8,7 +8,7 @@
 }
 
 .flip-cell-inner {
-  transition: transform 2.8s;
+  transition: transform 0.8s;
   transform-style: preserve-3d;
 }
 
